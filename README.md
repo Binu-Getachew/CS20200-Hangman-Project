@@ -21,7 +21,7 @@ The detailed functional requirements for this project can be found in the submit
 
 
 
-Gameplay Instructions
+## Gameplay Instructions
 At the start, the system selects a word and displays its category and blanks.  
 
 Enter a single alphabetical letter to make a guess.  
@@ -30,16 +30,16 @@ You are allowed a maximum of 6 wrong guesses
 
 After each game, you will be prompted to play again or exit.
 
-Use of Large Language Models (LLM)
+## Use of Large Language Models (LLM)
 This section is required by the project specification.
 
-What I used the LLM for: I used an LLM to help structure the initial LaTeX requirements document.
+#### What I used the LLM for: I used an LLM to help structure the initial LaTeX requirements document.
 
 Manual changes/reprompting: I had to manually adjust the ASCII drawing stages in the LaTeX code because the LLM initially struggled with escaping backslashes (\) correctly for the hangman drawing.
 
 Main point the LLM could not do: The LLM was not able to perfectly align the specific 6-stage drawing logic with the cumulative ASCII requirements without multiple corrections to the visual formatting.
 
-Author
+## Author
 Name: Biniam Mena
 
 Student ID: --------
