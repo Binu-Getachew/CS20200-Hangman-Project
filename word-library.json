@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Animals",
+    "words": [
+      "alligator",
+      "antelope",
+      "badger",
+      "buffalo",
+      "cheetah",
+      "dolphin",
+      "falcon",
+      "giraffe",
+      "hamster",
+      "jaguar",
+      "kangaroo",
+      "lemur",
+      "octopus",
+      "panther",
+      "penguin"
+    ]
+  },
+  {
+    "name": "Countries",
+    "words": [
+      "argentina",
+      "brazil",
+      "canada",
+      "denmark",
+      "egypt",
+      "finland",
+      "germany",
+      "ireland",
+      "japan",
+      "mexico",
+      "morocco",
+      "norway",
+      "portugal",
+      "singapore",
+      "thailand"
+    ]
+  },
+  {
+    "name": "Foods",
+    "words": [
+      "avocado",
+      "bagel",
+      "burrito",
+      "croissant",
+      "dumpling",
+      "falafel",
+      "lasagna",
+      "muffin",
+      "noodles",
+      "omelet",
+      "paella",
+      "pancake",
+      "pizza",
+      "sandwich",
+      "waffle"
+    ]
+  },
+  {
+    "name": "Sports",
+    "words": [
+      "archery",
+      "badminton",
+      "baseball",
+      "boxing",
+      "cricket",
+      "cycling",
+      "fencing",
+      "football",
+      "golf",
+      "hockey",
+      "rowing",
+      "rugby",
+      "skating",
+      "swimming",
+      "tennis"
+    ]
+  },
+  {
+    "name": "Technology",
+    "words": [
+      "algorithm",
+      "browser",
+      "compiler",
+      "database",
+      "firewall",
+      "firmware",
+      "keyboard",
+      "network",
+      "python",
+      "robotics",
+      "scanner",
+      "server",
+      "software",
+      "storage",
+      "websocket"
+    ]
+  },
+  {
+    "name": "Space",
+    "words": [
+      "asteroid",
+      "comet",
+      "galaxy",
+      "gravity",
+      "jupiter",
+      "meteor",
+      "nebula",
+      "orbit",
+      "planet",
+      "quasar",
+      "rocket",
+      "saturn",
+      "telescope",
+      "uranus",
+      "voyager"
+    ]
+  },
+  {
+    "name": "Music",
+    "words": [
+      "album",
+      "banjo",
+      "cello",
+      "chorus",
+      "drummer",
+      "flute",
+      "guitar",
+      "harmony",
+      "melody",
+      "opera",
+      "piano",
+      "rhythm",
+      "singer",
+      "trumpet",
+      "violin"
+    ]
+  },
+  {
+    "name": "Nature",
+    "words": [
+      "canyon",
+      "desert",
+      "forest",
+      "glacier",
+      "island",
+      "jungle",
+      "lagoon",
+      "meadow",
+      "mountain",
+      "ocean",
+      "prairie",
+      "rainfall",
+      "river",
+      "sunrise",
+      "waterfall"
+    ]
+  }
+]
