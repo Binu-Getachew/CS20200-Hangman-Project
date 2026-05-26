@@ -2,7 +2,7 @@ open System
 open System.Collections.Concurrent
 open System.IO
 open System.Net
-open System.Text.Json
+open System.Text
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.DependencyInjection
@@ -27,33 +27,77 @@ type GameState =
 let maxWrongGuesses = 6
 let sessionCookieName = "hangman-session-id"
 
-type LibraryCategory =
-    { Name: string
-      Words: string array }
-
 let randomLock = obj ()
 let random = Random()
 let games = ConcurrentDictionary<string, GameState>()
 let mutable shuffledDeck : WordEntry list = []
 
+let parseCsvLine (line: string) =
+    let fields = ResizeArray<string>()
+    let current = StringBuilder()
+    let mutable index = 0
+    let mutable inQuotes = false
+
+    while index < line.Length do
+        match line[index] with
+        | '"' ->
+            if inQuotes && index + 1 < line.Length && line[index + 1] = '"' then
+                current.Append('"') |> ignore
+                index <- index + 1
+            else
+                inQuotes <- not inQuotes
+        | ',' when not inQuotes ->
+            fields.Add(current.ToString())
+            current.Clear() |> ignore
+        | character ->
+            current.Append(character) |> ignore
+
+        index <- index + 1
+
+    fields.Add(current.ToString())
+    fields |> Seq.toList
+
 let loadWordBank () =
     let basePath = AppContext.BaseDirectory
-    let libraryPath = Path.Combine(basePath, "word-library.json")
-    let json = File.ReadAllText libraryPath
-    let categories = JsonSerializer.Deserialize<LibraryCategory array>(json)
+    let libraryPath = Path.Combine(basePath, "word-library.csv")
 
-    match categories with
-    | null
-    | [||] -> failwith "Word library is empty."
-    | categoryEntries ->
-        categoryEntries
-        |> Array.collect (fun category ->
-            category.Words
-            |> Array.map (fun word ->
-                { Category = category.Name
-                  Word = word.Trim().ToLowerInvariant() }))
-        |> Array.filter (fun entry -> not (String.IsNullOrWhiteSpace entry.Word))
-        |> Array.toList
+    if not (File.Exists libraryPath) then
+        failwithf "Word library not found: %s" libraryPath
+
+    match File.ReadLines(libraryPath) |> Seq.toList with
+    | [] ->
+        failwith "Word library is empty."
+    | header :: rows ->
+        let headers = header |> parseCsvLine |> List.map (fun field -> field.Trim())
+
+        if headers <> [ "Category"; "Word" ] then
+            failwith "Word library must use the header: Category,Word"
+
+        let entries =
+            rows
+            |> Seq.choose (fun row ->
+                match parseCsvLine row with
+                | category :: word :: _ ->
+                    let category = category.Trim()
+                    let word = word.Trim()
+
+                    if String.IsNullOrWhiteSpace category || String.IsNullOrWhiteSpace word then
+                        None
+                    elif word |> Seq.exists (fun character -> not (Char.IsLetter character)) then
+                        None
+                    else
+                        Some
+                            { Category = category
+                              Word = word.ToLowerInvariant() }
+                | _ ->
+                    None)
+            |> Seq.distinctBy (fun entry -> entry.Category, entry.Word)
+            |> Seq.toList
+
+        if List.isEmpty entries then
+            failwith "Word library does not contain any usable words."
+
+        entries
 
 let wordBank = loadWordBank ()
 
@@ -515,7 +559,7 @@ let renderPage sessionId (game: GameState) =
         {formSection}
 
         <p class="footer-note">Rules: invalid or duplicate guesses do not consume turns. Correct guesses reveal every matching letter.</p>
-        <p class="footer-note">Words come from a categorized library and are shuffled without reuse until the full deck is exhausted.</p>
+        <p class="footer-note">Words come from a categorized CSV library and are shuffled without reuse until the full deck is exhausted.</p>
       </section>
     </section>
   </main>
@@ -555,7 +599,7 @@ let getOrCreateGame sessionId =
 let saveGame sessionId game =
     games[sessionId] <- game
 
-let builder = WebApplication.CreateBuilder()
+let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs() |> Array.skip 1)
 builder.Services.AddRouting() |> ignore
 
 let app = builder.Build()

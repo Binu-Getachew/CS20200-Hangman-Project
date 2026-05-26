@@ -12,7 +12,7 @@ The detailed functional requirements for this project can be found in the submit
 
 ## What it implements
 
-- Categorized word library loaded from `word-library.json`
+- Categorized word library loaded from `word-library.csv`
 - Shuffle-based word selection without reuse until the deck is exhausted
 - Category and blank word display
 - Case-insensitive single-letter guesses
@@ -33,18 +33,19 @@ The detailed functional requirements for this project can be found in the submit
 
 - `HangmanWeb.fsproj`
 - `Program.fs`
-- `word-library.json`
+- `word-library.csv`
 
 ## Word library behavior
 
-The app no longer picks from a tiny hardcoded list with replacement.
+The app does not pick from a tiny hardcoded list with replacement.
 
-- Words are loaded from a categorized JSON file
+- Words are loaded from a categorized CSV file
+- `word-library.csv` was imported from `hangman_words_by_category.csv` and augmented with the previously generated words in matching categories
 - The full library is shuffled into a deck
 - Each new game uses the next word in the deck
 - Once the deck is empty, the app reshuffles the full library and starts again
 
-To expand the game, add more words or categories to `word-library.json`.
+To expand the game, add more words or categories to `word-library.csv`.
 
 ## Run locally
 
